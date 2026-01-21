@@ -1,0 +1,41 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  username  String   @unique
+  password  String
+  role      String   @default("staff") // e.g., 'admin', 'clerk', 'captain'
+  isDeleted       Boolean  @default(false)
+  createdAt DateTime @default(now())
+}
+
+model Resident {
+  id              Int      @id @default(autoincrement())
+  firstName       String
+  lastName        String
+  birthDate       DateTime
+  purok           String
+  houseNumber     String
+  phoneNumber     String   @unique
+  isIndigent      Boolean  @default(false)
+  isSeniorCitizen Boolean  @default(false)
+  isDeleted       Boolean  @default(false)
+  createdAt       DateTime @default(now())
+}
+
+model DocumentTemplate {
+  id             Int      @id @default(autoincrement())
+  name           String
+  layoutSettings Json     
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+}
