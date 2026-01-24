@@ -7,27 +7,30 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 
 // Middleware
-const allowedOrigins = [
-  'http://localhost:5173',
-  'https://brgymanagementsystem-eta.vercel.app', // Your specific frontend
-];
+// 1. Define the origin exactly as it appears in the browser error
+const frontendUrl = 'https://brgymanagementsystem-eta.vercel.app';
 
 app.use(cors({
-  origin: function (origin, callback) {
-    // allow requests with no origin (like mobile apps or curl)
-    if (!origin) return callback(null, true);
-    
-    if (allowedOrigins.indexOf(origin) !== -1) {
-      callback(null, true);
-    } else {
-      console.log("Blocked by CORS:", origin); // Helps you see the blocked URL in Vercel logs
-      callback(new Error('Not allowed by CORS'));
-    }
-  },
+  origin: frontendUrl, 
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
   credentials: true,
-  allowedHeaders: ['Content-Type', 'Authorization']
+  preflightContinue: false,
+  optionsSuccessStatus: 204
 }));
+
+// 2. Extra safety: Manual header injection for all requests
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', frontendUrl);
+  res.header('Access-Control-Allow-Methods', 'GET,POST,PUT,DELETE,OPTIONS');
+  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  res.header('Access-Control-Allow-Credentials', 'true');
+  
+  if (req.method === 'OPTIONS') {
+    return res.sendStatus(204);
+  }
+  next();
+});
 
 // app.use(cors());
 // app.use(express.json()); // Essential for CRUD to read JSON body
