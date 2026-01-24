@@ -30,3 +30,5 @@ app.use('/api/documents', authenticateToken, documentRoutes);
 app.listen(PORT, '0.0.0.0', () => {
     console.log(`🚀 Server ready at: http://localhost:${PORT}`);
 });
+
+module.exports = app;
