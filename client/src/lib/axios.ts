@@ -2,7 +2,7 @@ import axios from 'axios';
 
 const api = axios.create({
   // baseURL: 'http://localhost:5000/api',
-  baseURL: 'http://brgymanagementsystem-api/api',
+  baseURL: 'https://brgymanagementsystem-api.vercel.app/api',
   headers: {
     'Content-Type': 'application/json',
   },
