@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { authService } from "../../services/authService";
 import { Link, useNavigate } from "react-router"; // Added useNavigate
 import { ChevronLeftIcon, EyeCloseIcon, EyeIcon } from "../../icons";
 import Label from "../form/Label";
@@ -16,8 +17,9 @@ export default function SignInForm() {
     username: "", // Changed from email to username to match your backend
     password: "",
   });
-  const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [submissionStatus, setSubmissionStatus] = useState<"idle" | "success" | "error">("idle");
+  const [errorMessage, setErrorMessage] = useState("");
 
   // 2. Handle Input Changes
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -30,30 +32,25 @@ export default function SignInForm() {
   // 3. Handle Submit
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError("");
     setLoading(true);
+    setSubmissionStatus("idle");
 
     try {
-      const response = await fetch("http://localhost:5000/api/users/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.message || "Login failed");
-      }
+      const data = await authService.login(formData);
 
       // 4. Success: Store token and user info
       localStorage.setItem("token", data.token);
       localStorage.setItem("user", JSON.stringify(data.user));
 
       // Redirect to dashboard
-      navigate("/");
+      setSubmissionStatus("success");
+
+      setTimeout(() => {
+        navigate("/");
+      }, 1500);
     } catch (err: any) {
-      setError(err.message);
+      setSubmissionStatus("error");
+      setErrorMessage(err.response?.data?.message || "Login failed. Please check your credentials.");
     } finally {
       setLoading(false);
     }
@@ -82,9 +79,9 @@ export default function SignInForm() {
           </div>
 
           {/* Error Alert */}
-          {error && (
+          {errorMessage && (
             <div className="p-3 mb-4 text-sm text-red-500 bg-red-100 rounded-lg dark:bg-red-500/10">
-              {error}
+              {errorMessage}
             </div>
           )}
 
