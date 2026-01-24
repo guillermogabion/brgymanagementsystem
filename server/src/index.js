@@ -9,7 +9,7 @@ const PORT = process.env.PORT || 5000;
 // Middleware
 const allowedOrigins = [
   'http://localhost:5173',
-  'https://brgymanagementsystem-eta.vercel.app', // Your specific frontend
+  'https://brgymanagementsystem-eta.vercel.app/', // Your specific frontend
 ];
 
 app.use(cors({
