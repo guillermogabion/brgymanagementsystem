@@ -104,14 +104,14 @@ export default function App() {
       <ScrollToTop />
       <Routes>
         {/* PUBLIC ROUTES */}
-        <Route path="/TailAdmin/signin" element={<SignIn />} />
-        <Route path="/TailAdmin/signup" element={<SignUp />} />
+        <Route path="/signin" element={<SignIn />} />
+        <Route path="/signup" element={<SignUp />} />
 
         {/* PROTECTED ROUTES GROUP */}
         <Route element={<ProtectedRoute />}>
           {/* All routes inside here require a token */}
           
-          <Route path="/TailAdmin/" element={<AppLayout />}>
+          <Route path="/" element={<AppLayout />}>
             <Route index element={<Home />} />
             
             {/* Users */}
