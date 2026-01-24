@@ -3,26 +3,14 @@
   "redirects": [
     {
       "source": "/",
-      "destination": "/TailAdmin/",
+      "destination": "/TailAdmin/signin",
       "permanent": false
     }
   ],
   "rewrites": [
-    {
-      "source": "/api/(.*)",
-      "destination": "/server/index.js"
-    },
-    {
-      "source": "/TailAdmin/assets/(.*)",
-      "destination": "/client/dist/assets/$1"
-    },
-    {
-      "source": "/TailAdmin/(.*)",
-      "destination": "/client/dist/index.html"
-    },
-    {
-      "source": "/(.*)",
-      "destination": "/client/dist/index.html"
-    }
+    { "source": "/api/(.*)", "destination": "/server/index.js" },
+    { "source": "/TailAdmin/assets/(.*)", "destination": "/client/dist/assets/$1" },
+    { "source": "/TailAdmin/(.*)", "destination": "/client/dist/index.html" },
+    { "source": "/(.*)", "destination": "/client/dist/index.html" }
   ]
 }
