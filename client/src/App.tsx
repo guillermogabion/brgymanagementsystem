@@ -100,18 +100,18 @@ import ProtectedRoute from "./components/auth/ProtectedRoute.tsx"; // Import the
 
 export default function App() {
   return (
-    <Router basename="/TailAdmin">
+    <Router>
       <ScrollToTop />
       <Routes>
         {/* PUBLIC ROUTES */}
-        <Route path="/signin" element={<SignIn />} />
-        <Route path="/signup" element={<SignUp />} />
+        <Route path="/TailAdmin/signin" element={<SignIn />} />
+        <Route path="/TailAdmin/signup" element={<SignUp />} />
 
         {/* PROTECTED ROUTES GROUP */}
         <Route element={<ProtectedRoute />}>
           {/* All routes inside here require a token */}
           
-          <Route path="/" element={<AppLayout />}>
+          <Route path="/TailAdmin/" element={<AppLayout />}>
             <Route index element={<Home />} />
             
             {/* Users */}
