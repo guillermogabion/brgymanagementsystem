@@ -1,7 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const authenticateToken = require('./middleware/authMiddleware');
-// require('dotenv').config();
+require('dotenv').config();
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -9,7 +9,7 @@ const PORT = process.env.PORT || 5000;
 // Middleware
 const allowedOrigins = [
   'http://localhost:5173',
-  'https://brgymanagementsystem-eta.vercel.app/', // Your specific frontend
+  'https://brgymanagementsystem-eta.vercel.app', // Your specific frontend
 ];
 
 app.use(cors({
