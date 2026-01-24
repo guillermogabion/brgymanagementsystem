@@ -6,12 +6,8 @@
       "destination": "/server/index.js"
     },
     {
-      "source": "/TailAdmin/assets/(.*)",
+      "source": "/assets/(.*)",
       "destination": "/client/dist/assets/$1"
-    },
-    {
-      "source": "/TailAdmin/(.*)",
-      "destination": "/client/dist/index.html"
     },
     {
       "source": "/(.*)",
