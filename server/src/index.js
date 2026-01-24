@@ -11,26 +11,14 @@ const PORT = process.env.PORT || 5000;
 const frontendUrl = 'https://brgymanagementsystem-eta.vercel.app';
 
 app.use(cors({
-  origin: frontendUrl, 
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization'],
+  origin: frontendUrl,
   credentials: true,
-  preflightContinue: false,
-  optionsSuccessStatus: 204
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
 }));
 
-// 2. Extra safety: Manual header injection for all requests
-app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', frontendUrl);
-  res.header('Access-Control-Allow-Methods', 'GET,POST,PUT,DELETE,OPTIONS');
-  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-  res.header('Access-Control-Allow-Credentials', 'true');
-  
-  if (req.method === 'OPTIONS') {
-    return res.sendStatus(204);
-  }
-  next();
-});
+// VERY IMPORTANT: handle preflight globally
+app.options('*', cors());
 
 // app.use(cors());
 // app.use(express.json()); // Essential for CRUD to read JSON body
