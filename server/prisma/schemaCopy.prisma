@@ -1,21 +1,11 @@
-// -----------------------------------------------------------
-// PRISMA CONFIGURATION
-// -----------------------------------------------------------
-
-/// This generator defines how the Prisma Client is built for your application.
 generator client {
   provider = "prisma-client-js"
 }
 
-/// DATABASE CONNECTION
-/// Change provider to "postgresql" when migrating to Supabase.
 datasource db {
-  // Use "postgresql" for Supabase/Production
-  // Use "sqlite" for Local Development
-  provider = "sqlite" 
-  
-  // The URL is pulled from your .env file for security
+  provider = "postgresql"
   url      = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
 }
 
 enum Designation {
