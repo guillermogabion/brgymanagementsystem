@@ -1,16 +1,23 @@
 {
   "version": 2,
+  "redirects": [
+    {
+      "source": "/",
+      "destination": "/TailAdmin/",
+      "permanent": false
+    }
+  ],
   "rewrites": [
     {
       "source": "/api/(.*)",
       "destination": "/server/index.js"
     },
     {
-      "source": "/assets/(.*)",
+      "source": "/TailAdmin/assets/(.*)",
       "destination": "/client/dist/assets/$1"
     },
     {
-      "source": "/(.*)",
+      "source": "/TailAdmin/(.*)",
       "destination": "/client/dist/index.html"
     }
   ]
