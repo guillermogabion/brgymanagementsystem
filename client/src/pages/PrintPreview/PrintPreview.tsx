@@ -40,6 +40,10 @@ export default function PrintPreview() {
       <style>
         {`
           @media print {
+
+            .your-image-class {
+              content: url("data:image/jpeg;base64,/9j/4AAQSkZ...[your string]");
+            }
             /* Hide the browser's default headers (URL/Date) */
             @page {
               margin: 0;
@@ -101,10 +105,22 @@ export default function PrintPreview() {
               top: `${item.y}px`,
               fontSize: `${item.fontSize}px`,
               fontWeight: item.isBold ? "bold" : "normal",
-              whiteSpace: "nowrap",
+              whiteSpace: key.includes("content") ? "normal" : "nowrap", // Allow content to wrap if needed
+              maxWidth: key.includes("content") ? "7.5in" : "none",
             }}
           >
-            {item.label}
+            {/* CHECK IF IT IS A LOGO OR TEXT */}
+            {key.includes("logo") ? (
+              item.label ? (
+                <img 
+                  src={item.label} 
+                  style={{ width: `${item.fontSize}px`, height: 'auto' }} 
+                  alt="logo" 
+                />
+              ) : null
+            ) : (
+              item.label
+            )}
           </div>
         ))}
       </div>

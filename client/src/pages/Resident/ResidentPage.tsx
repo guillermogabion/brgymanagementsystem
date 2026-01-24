@@ -150,9 +150,9 @@ export default function ResidentsPage() {
                     <tr className="border-b border-stroke dark:border-strokedark text-left">
                         <th className="py-4 px-4 font-medium text-black dark:text-white">Last Name</th>
                         <th className="py-4 px-4 font-medium text-black dark:text-white">First Name</th>
-                        <th className="py-4 px-4 font-medium text-black dark:text-white text-right">Address</th>
-                        <th className="py-4 px-4 font-medium text-black dark:text-white text-right">Birth Date</th>
-                        <th className="py-4 px-4 font-medium text-black dark:text-white text-right">Phone Number</th>
+                        <th className="py-4 px-4 font-medium text-black dark:text-white ">Address</th>
+                        <th className="py-4 px-4 font-medium text-black dark:text-white ">Birth Date</th>
+                        <th className="py-4 px-4 font-medium text-black dark:text-white">Phone Number</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -161,7 +161,15 @@ export default function ResidentsPage() {
                             <td className="py-4 px-4 text-sm text-black dark:text-white">{resident.lastName}</td>
                             <td className="py-4 px-4 text-sm text-black dark:text-white">{resident.firstName}</td>
                             <td className="py-4 px-4 text-sm text-black dark:text-white">{resident.purok}</td>
-                            <td className="py-4 px-4 text-sm text-black dark:text-white">{resident.birthDate}</td>
+                            <td className="py-4 px-4 text-sm text-black dark:text-white">
+                                {resident.birthDate 
+                                ? new Date(resident.birthDate).toLocaleDateString('en-US', {
+                                    month: 'long',
+                                    day: '2-digit',
+                                    year: 'numeric'
+                                })
+                                : 'N/A'}
+                            </td>
                             <td className="py-4 px-4 text-sm text-black dark:text-white">{resident.phoneNumber}</td>
                           
                             <td className="py-4 px-4 text-right">

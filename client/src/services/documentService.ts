@@ -7,6 +7,11 @@ export interface LayoutItem {
   y: number;
   fontSize: number;
   isBold: boolean;
+  width?: number;  // Add this
+  height?: number; // Add 
+  fontFamily: string;
+  lineHeight: number;
+  letterSpacing: number
 }
 
 export interface DocumentLayout {

@@ -175,12 +175,13 @@ export default function DocumentsPage() {
                 {/* Pagination Controls ... (Same as your code) */}
             </ComponentCard>
 
-            {/* <DeleteConfirmationModal 
+            <DeleteConfirmationModal 
                 isOpen={isDeleteModalOpen}
                 onClose={() => setIsDeleteModalOpen(false)}
                 onConfirm={confirmDelete}
                 loading={isDeleting}
-            /> */}
+                status="error" // <--- Add this line
+            />
         </>
     );
 }

@@ -1,14 +1,15 @@
-import { ReactNode } from "react";
+import { ReactNode, ButtonHTMLAttributes } from "react";
 
 interface ButtonProps {
-  children: ReactNode; // Button text or content
-  size?: "sm" | "md"; // Button size
-  variant?: "primary" | "outline"; // Button variant
-  startIcon?: ReactNode; // Icon before the text
-  endIcon?: ReactNode; // Icon after the text
-  onClick?: () => void; // Click handler
-  disabled?: boolean; // Disabled state
-  className?: string; // Disabled state
+  children: ReactNode; 
+  size?: "sm" | "md"; 
+  variant?: "primary" | "outline"; 
+  startIcon?: ReactNode; 
+  endIcon?: ReactNode; 
+  onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void; // Updated to accept event
+  disabled?: boolean; 
+  className?: string; 
+  type?: "button" | "submit" | "reset"; // Added the type property
 }
 
 const Button: React.FC<ButtonProps> = ({
@@ -20,6 +21,7 @@ const Button: React.FC<ButtonProps> = ({
   onClick,
   className = "",
   disabled = false,
+  type = "submit", // Defaulted to submit to maintain standard form behavior
 }) => {
   // Size Classes
   const sizeClasses = {
@@ -37,6 +39,7 @@ const Button: React.FC<ButtonProps> = ({
 
   return (
     <button
+      type={type} // Pass the type to the native button
       className={`inline-flex items-center justify-center gap-2 rounded-lg transition ${className} ${
         sizeClasses[size]
       } ${variantClasses[variant]} ${

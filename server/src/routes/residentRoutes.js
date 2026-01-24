@@ -9,3 +9,5 @@ router.put('/:id', updateResident);
 router.delete('/:id', deleteResident);  
 
 module.exports = router;
+
+

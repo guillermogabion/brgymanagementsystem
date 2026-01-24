@@ -75,6 +75,8 @@ const template: DocumentTemplate = {
     // Notice [fullName] is now a JSX Element.
     const replacements: Record<string, React.ReactNode> = {
       "[fullName]": <span style={{ fontWeight: "bold", textDecoration: "underline" }}>{`${resident.firstName} ${resident.lastName}`}</span>,
+      "[isIndigent]": resident.isIndigent ? "Is Indigent" : "Not an Indigent",
+      "[isSeniorCitizen]": resident.isIndigent ? "Is a Senior Citizen" : "Not a Senior Citizen",
       "[age]": calculateAge(resident.birthDate),
       "[purok]": resident.purok || "__________",
       "[country]": addr.country,

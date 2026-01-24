@@ -26,71 +26,126 @@ import DocumentsPage from "./pages/Document/DocumentPage";
 import DocumentDesigner from "./pages/Document/DocumentDesigner";
 import PrintPreview from "./pages/PrintPreview/PrintPreview";
 import DefaultLayout from "./layout/DefaultLayout";
+// export default function App() {
+//   return (
+//     <>
+//       <Router>
+//         <ScrollToTop />
+//         <Routes>
+//           {/* Dashboard Layout */}
+//           <Route path="/TailAdmin/" element={<AppLayout />}>
+//             <Route index element={<Home />} />
+
+//             {/* Others Page */}
+
+//             {/* users  */}
+//             <Route path="users" element={<UsersList />} />
+
+//             {/* residents  */}
+//             <Route path="residents">
+//               {/* This is the main list: /TailAdmin/residents */}
+//               <Route index element={<ResidentsPage />} /> 
+//               <Route path="edit/:id" element={<ResidentsForm />} />
+              
+//               {/* This is the form: /TailAdmin/residents/add */}
+//               <Route path="add" element={<ResidentsForm />} />
+//             </Route>
+
+//             <Route path="documents">
+//               <Route index element={<DocumentsPage />} /> 
+//               <Route path="add" element={<DocumentDesigner />} /> 
+//               <Route path="edit/:id" element={<DocumentDesigner />} /> 
+//             </Route>
+//             <Route path="profile" element={<UserProfiles />} />
+//             <Route path="templaterenderer" element={<TemplateRenderer />} />
+//             <Route path="calendar" element={<Calendar />} />
+//             <Route path="blank" element={<Blank />} />
+
+//             {/* Forms */}
+//             <Route path="form-elements" element={<FormElements />} />
+
+//             {/* Tables */}
+//             <Route path="basic-tables" element={<BasicTables />} />
+
+//             {/* Ui Elements */}
+//             <Route path="alerts" element={<Alerts />} />
+//             <Route path="avatars" element={<Avatars />} />
+//             <Route path="badge" element={<Badges />} />
+//             <Route path="buttons" element={<Buttons />} />
+//             <Route path="images" element={<Images />} />
+//             <Route path="videos" element={<Videos />} />
+
+//             {/* Charts */}
+//             <Route path="line-chart" element={<LineChart />} />
+//             <Route path="bar-chart" element={<BarChart />} />
+//           </Route>
+
+//           <Route path="/TailAdmin/documents/print/:templateId/:residentId" element={<PrintPreview />} />
+
+
+//           {/* Auth Layo ut */}
+//           <Route path="/TailAdmin/signin" element={<SignIn />} />
+//           <Route path="/TailAdmin/signup" element={<SignUp />} />
+
+//           {/* Fallback Route */}
+//           <Route path="*" element={<NotFound />} />
+//         </Routes>
+//       </Router>
+//     </>
+//   );
+// }
+
+import ProtectedRoute from "./components/auth/ProtectedRoute.tsx"; // Import the guard
+// ... keep your other imports
+
 export default function App() {
   return (
-    <>
-      <Router>
-        <ScrollToTop />
-        <Routes>
-          {/* Dashboard Layout */}
+    <Router>
+      <ScrollToTop />
+      <Routes>
+        {/* PUBLIC ROUTES */}
+        <Route path="/TailAdmin/signin" element={<SignIn />} />
+        <Route path="/TailAdmin/signup" element={<SignUp />} />
+
+        {/* PROTECTED ROUTES GROUP */}
+        <Route element={<ProtectedRoute />}>
+          {/* All routes inside here require a token */}
+          
           <Route path="/TailAdmin/" element={<AppLayout />}>
             <Route index element={<Home />} />
-
-            {/* Others Page */}
-
-            {/* users  */}
+            
+            {/* Users */}
             <Route path="users" element={<UsersList />} />
 
-            {/* residents  */}
+            {/* Residents */}
             <Route path="residents">
-              {/* This is the main list: /TailAdmin/residents */}
               <Route index element={<ResidentsPage />} /> 
               <Route path="edit/:id" element={<ResidentsForm />} />
-              
-              {/* This is the form: /TailAdmin/residents/add */}
               <Route path="add" element={<ResidentsForm />} />
             </Route>
 
+            {/* Documents */}
             <Route path="documents">
               <Route index element={<DocumentsPage />} /> 
               <Route path="add" element={<DocumentDesigner />} /> 
               <Route path="edit/:id" element={<DocumentDesigner />} /> 
             </Route>
+
             <Route path="profile" element={<UserProfiles />} />
-            <Route path="templaterenderer" element={<TemplateRenderer />} />
             <Route path="calendar" element={<Calendar />} />
-            <Route path="blank" element={<Blank />} />
-
-            {/* Forms */}
-            <Route path="form-elements" element={<FormElements />} />
-
-            {/* Tables */}
-            <Route path="basic-tables" element={<BasicTables />} />
-
-            {/* Ui Elements */}
-            <Route path="alerts" element={<Alerts />} />
-            <Route path="avatars" element={<Avatars />} />
-            <Route path="badge" element={<Badges />} />
-            <Route path="buttons" element={<Buttons />} />
-            <Route path="images" element={<Images />} />
-            <Route path="videos" element={<Videos />} />
-
-            {/* Charts */}
-            <Route path="line-chart" element={<LineChart />} />
-            <Route path="bar-chart" element={<BarChart />} />
+            {/* ... add all other internal routes here */}
           </Route>
 
-          <Route path="/TailAdmin/documents/print/:templateId/:residentId" element={<PrintPreview />} />
+          {/* Protected Route outside AppLayout (Print Preview) */}
+          <Route 
+            path="/TailAdmin/documents/print/:templateId/:residentId" 
+            element={<PrintPreview />} 
+          />
+        </Route>
 
-
-          {/* Auth Layo ut */}
-          <Route path="/TailAdmin/signin" element={<SignIn />} />
-          <Route path="/TailAdmin/signup" element={<SignUp />} />
-
-          {/* Fallback Route */}
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </Router>
-    </>
+        {/* FALLBACK */}
+        <Route path="*" element={<NotFound />} />
+      </Routes>
+    </Router>
   );
 }
