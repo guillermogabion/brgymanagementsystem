@@ -12,7 +12,7 @@ const ProtectedRoute = () => {
   if (!isAuthenticated) {
     // 2. Redirect them to the sign-in page, but save the current location 
     // so we can send them back there after they log in.
-    return <Navigate to="/TailAdmin/signin" state={{ from: location }} replace />;
+    return <Navigate to="/signin" state={{ from: location }} replace />;
   }
 
   // 3. If authenticated, render the child routes

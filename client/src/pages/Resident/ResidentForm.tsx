@@ -130,7 +130,7 @@ export default function ResidentsForm({ residentToEdit, onSuccess, onCancel }: R
         if (typeof onSuccess === "function") {
           onSuccess();
         } else {
-          navigate("/TailAdmin/residents");
+          navigate("/residents");
         }
       }, 2000);
     } catch (err: any) {
@@ -142,7 +142,7 @@ export default function ResidentsForm({ residentToEdit, onSuccess, onCancel }: R
   };
 
   const handleCancel = () => {
-    onCancel ? onCancel() : navigate("/TailAdmin/residents");
+    onCancel ? onCancel() : navigate("/residents");
   };
 
   return (
@@ -150,7 +150,7 @@ export default function ResidentsForm({ residentToEdit, onSuccess, onCancel }: R
       <PageBreadcrumb
         pageTitle={isEditMode ? "Edit Resident" : "Add New Resident"}
         parentTitle="Residents List"
-        parentRoute="/TailAdmin/residents"
+        parentRoute="/residents"
       />
 
       <ComponentCard title={isEditMode ? "Edit Personal Information" : "Personal Information"}>

@@ -49,7 +49,7 @@ export default function ResidentsPage() {
 
     const handleProcessCertificate = (templateId: string) => {
         // Navigate to a new Print view with Resident ID and Template ID
-        navigate(`/TailAdmin/documents/print/${templateId}/${selectedResident?.id}`);
+        navigate(`/documents/print/${templateId}/${selectedResident?.id}`);
     };
     
     

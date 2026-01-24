@@ -28,7 +28,7 @@ export default function UserDropdown() {
     closeDropdown();
 
     // 3. Redirect to login page
-    navigate("/TailAdmin/signin");
+    navigate("/signin");
   };
 
   return (

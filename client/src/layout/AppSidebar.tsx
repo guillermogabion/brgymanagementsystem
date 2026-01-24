@@ -329,7 +329,7 @@ const AppSidebar: React.FC = () => {
           !isExpanded && !isHovered ? "lg:justify-center" : "justify-start"
         }`}
       >
-        <Link to="/TailAdmin/">
+        <Link to="/">
           {isExpanded || isHovered || isMobileOpen ? (
             <>
               <img

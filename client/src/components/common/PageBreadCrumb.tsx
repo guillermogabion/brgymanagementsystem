@@ -22,7 +22,7 @@ const PageBreadcrumb: React.FC<BreadcrumbProps> = ({
           <li>
             <Link
               className="inline-flex items-center gap-1.5 text-sm text-gray-500 dark:text-gray-400 hover:text-primary"
-              to="/TailAdmin/"
+              to="/"
             >
               Home
               <ChevronIcon />

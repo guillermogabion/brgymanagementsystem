@@ -138,7 +138,7 @@ export default function App() {
 
           {/* Protected Route outside AppLayout (Print Preview) */}
           <Route 
-            path="/TailAdmin/documents/print/:templateId/:residentId" 
+            path="/documents/print/:templateId/:residentId" 
             element={<PrintPreview />} 
           />
         </Route>

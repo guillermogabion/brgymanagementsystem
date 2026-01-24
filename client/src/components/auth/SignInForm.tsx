@@ -51,7 +51,7 @@ export default function SignInForm() {
       localStorage.setItem("user", JSON.stringify(data.user));
 
       // Redirect to dashboard
-      navigate("/TailAdmin/");
+      navigate("/");
     } catch (err: any) {
       setError(err.message);
     } finally {
@@ -63,7 +63,7 @@ export default function SignInForm() {
     <div className="flex flex-col flex-1">
       <div className="w-full max-w-md pt-10 mx-auto">
         <Link
-          to="/TailAdmin/"
+          to="/"
           className="inline-flex items-center text-sm text-gray-500 transition-colors hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300"
         >
           <ChevronLeftIcon className="size-5" />
@@ -156,7 +156,7 @@ export default function SignInForm() {
               <p className="text-sm font-normal text-center text-gray-700 dark:text-gray-400 sm:text-start">
                 Don&apos;t have an account? {""}
                 <Link
-                  to="/TailAdmin/signup"
+                  to="/signup"
                   className="text-brand-500 hover:text-brand-600 dark:text-brand-400"
                 >
                   Sign Up

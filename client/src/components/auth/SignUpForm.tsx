@@ -90,7 +90,7 @@ export default function SignUpForm({ userToEdit = null, onSuccess = () => {} } :
   return (
     <div className="flex flex-col flex-1 w-full overflow-y-auto lg:w-1/2 no-scrollbar">
       <div className="w-full max-w-md mx-auto mb-5 sm:pt-10">
-        <Link to="/TailAdmin/" className="inline-flex items-center text-sm text-gray-500 hover:text-gray-700">
+        <Link to="/" className="inline-flex items-center text-sm text-gray-500 hover:text-gray-700">
           <ChevronLeftIcon className="size-5" />
           Back to dashboard
         </Link>
@@ -206,7 +206,7 @@ export default function SignUpForm({ userToEdit = null, onSuccess = () => {} } :
         {!isEditMode && (
           <div className="mt-5 text-center">
             <p className="text-sm text-gray-700 dark:text-gray-400">
-              Already have an account? <Link to="/TailAdmin/signin" className="text-brand-500 font-medium">Sign In</Link>
+              Already have an account? <Link to="/signin" className="text-brand-500 font-medium">Sign In</Link>
             </p>
           </div>
         )}

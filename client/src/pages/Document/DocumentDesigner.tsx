@@ -84,7 +84,7 @@ export default function DocumentDesigner() {
             } else {
                 await documentService.create(payload);
             }
-            navigate("/TailAdmin/documents");
+            navigate("/documents");
         } catch (err: any) {
             setErrorMessage(err.response?.data?.message || "Error saving template.");
         } finally {
@@ -193,7 +193,7 @@ export default function DocumentDesigner() {
 
     return (
         <>
-            <PageBreadcrumb pageTitle={isEditMode ? "Edit Template" : "Create Template"} parentTitle="Templates" parentRoute="/TailAdmin/documents" />
+            <PageBreadcrumb pageTitle={isEditMode ? "Edit Template" : "Create Template"} parentTitle="Templates" parentRoute="/documents" />
 
             <style>
                 {`
