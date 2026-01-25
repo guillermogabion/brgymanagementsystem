@@ -2,10 +2,11 @@ import axios from 'axios';
 
 const api = axios.create({
   // baseURL: 'http://localhost:5000/api',
-  baseURL: 'https://brgymanagementsystem-api.vercel.app/api',
+  baseURL: 'https://brgymanagementsystem.vercel.app/api',
   headers: {
     'Content-Type': 'application/json',
   },
+  withCredentials: true
 });
 
 // ADD THIS INTERCEPTOR
