@@ -4,9 +4,11 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "generate": "cd server && npx prisma generate",
+    "migrate:local": "npx prisma migrate dev --schema=server/prisma/schema.local.prisma",
     "server": "npm start --prefix server",
     "client": "npm start --prefix client",
-    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "dev": "npm run generate && concurrently \"npm run server\" \"npm run client\"",
     "build": "npm install --prefix server && npx prisma generate --schema=server/prisma/schema.prisma && npm install --prefix client && npm run build --prefix client"
   },
   "keywords": [],
