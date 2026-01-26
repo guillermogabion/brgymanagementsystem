@@ -17,6 +17,7 @@ interface Resident {
   houseNumber: string;
   isIndigent: boolean;
   isSeniorCitizens: boolean; // Matches Prisma 'isSeniorCitizens'
+  pic?: string;
 }
 
 interface ResidentFormProps {
@@ -42,6 +43,7 @@ export default function ResidentsForm({ residentToEdit, onSuccess, onCancel }: R
     houseNumber: "",
     isIndigent: false,
     isSeniorCitizen: false,
+    pic: ""
   });
 
   const [loading, setLoading] = useState(false);
@@ -68,6 +70,15 @@ export default function ResidentsForm({ residentToEdit, onSuccess, onCancel }: R
     };
 
     const mapDataToForm = (data: any) => {
+
+      const formatBase64 = (str: string) => {
+        if (!str) return "";
+        // If it already starts with "data:image", return it as is
+        if (str.startsWith("data:image")) return str;
+        // Otherwise, assume it's raw Base64 and prepend the header
+        // You can change 'jpeg' to 'png' depending on your default
+        return `data:image/jpeg;base64,${str}`;
+      };
       setFormData({
         firstName: data.firstName || "",
         lastName: data.lastName || "",
@@ -79,6 +90,7 @@ export default function ResidentsForm({ residentToEdit, onSuccess, onCancel }: R
         // Boolean conversion: Handles both actual booleans and truthy values
         isIndigent: Boolean(data.isIndigent),
         isSeniorCitizen: Boolean(data.isSeniorCitizens || data.isSeniorCitizen),
+        pic: formatBase64(data.pic) || "",
       });
     };
 
@@ -123,6 +135,7 @@ export default function ResidentsForm({ residentToEdit, onSuccess, onCancel }: R
           houseNumber: "",
           isIndigent: false,
           isSeniorCitizen: false,
+          pic: "",
         });
       }
 
@@ -143,6 +156,17 @@ export default function ResidentsForm({ residentToEdit, onSuccess, onCancel }: R
 
   const handleCancel = () => {
     onCancel ? onCancel() : navigate("/residents");
+  };
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setFormData((prev) => ({ ...prev, pic: reader.result as string }));
+      };
+      reader.readAsDataURL(file);
+    }
   };
 
   return (
@@ -167,6 +191,21 @@ export default function ResidentsForm({ residentToEdit, onSuccess, onCancel }: R
           )}
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="md:col-span-2 flex flex-col items-center gap-4 p-4 border-2 border-dashed border-gray-200 dark:border-gray-700 rounded-xl">
+              <div className="h-32 w-32 rounded-full overflow-hidden bg-gray-100 dark:bg-gray-800 border">
+                {formData.pic ? (
+                  <img src={formData.pic} alt="Preview" className="h-full w-full object-cover" />
+                ) : (
+                  <div className="flex items-center justify-center h-full text-gray-400">No Photo</div>
+                )}
+              </div>
+              <input
+                type="file"
+                accept="image/*"
+                onChange={handleFileChange}
+                className="text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-primary/10 file:text-primary hover:file:bg-primary/20"
+              />
+            </div>
             <div>
               <label className="mb-2.5 block font-medium text-black dark:text-white">First Name</label>
               <Input name="firstName" placeholder="Enter first name" value={formData.firstName} onChange={handleChange} />

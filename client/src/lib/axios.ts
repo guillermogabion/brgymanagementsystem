@@ -1,12 +1,12 @@
 import axios from 'axios';
 
 const api = axios.create({
-  // baseURL: 'http://localhost:5000/api',
-  baseURL: 'https://brgymanagementsystem.vercel.app/api',
+  // baseURL: 'http://localhost:5000/api', // local 
+  baseURL: 'https://brgymanagementsystem.vercel.app/api', // prod
   headers: {
     'Content-Type': 'application/json',
   },
-  withCredentials: true
+  withCredentials: true // uncomment for prod
 });
 
 // ADD THIS INTERCEPTOR
@@ -32,7 +32,7 @@ api.interceptors.response.use(
       // If the token is invalid or expired, log the user out
       localStorage.removeItem('token');
       localStorage.removeItem('user');
-      window.location.href = '/login'; 
+      window.location.href = '/signin'; 
     }
     return Promise.reject(error);
   }

@@ -1,11 +1,11 @@
-import { useState, useEffect } from "react";
-import { Link } from "react-router-dom"; // Ensure correct import for your router version
-import { ChevronLeftIcon, EyeCloseIcon, EyeIcon } from "../../icons";
+import { useState, useEffect, useRef } from "react";
+import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { ChevronLeftIcon, EyeCloseIcon, EyeIcon, UserIcon } from "../../icons"; // Added UserIcon as placeholder
 import Label from "../form/Label";
 import Input from "../form/input/InputField";
 import Checkbox from "../form/input/Checkbox";
 import { userService } from "../../services/userService";
-
 
 interface User {
   id: number;
@@ -13,18 +13,22 @@ interface User {
   email: string;
   role: string;
   designation: string;
+  pic?: string; // Add pic to interface
 }
 
-// 2. Define the Props for your component
 interface SignUpFormProps {
-  userToEdit?: User | null; // Can be a User object OR null
+  userToEdit?: User | null;
   onSuccess?: () => void;
 }
 
-export default function SignUpForm({ userToEdit = null, onSuccess = () => {} } : SignUpFormProps) {
+export default function SignUpForm({ userToEdit = null, onSuccess = () => {} }: SignUpFormProps) {
+  const navigate = useNavigate();
+  
   const isEditMode = !!userToEdit;
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  
   const [showPassword, setShowPassword] = useState(false);
-  const [isChecked, setIsChecked] = useState(isEditMode); // Auto-check if editing
+  const [isChecked, setIsChecked] = useState(isEditMode);
   const [loading, setLoading] = useState(false);
   const [submissionStatus, setSubmissionStatus] = useState<"idle" | "success" | "error">("idle");
   const [errorMessage, setErrorMessage] = useState("");
@@ -35,29 +39,46 @@ export default function SignUpForm({ userToEdit = null, onSuccess = () => {} } :
     password: "",
     role: "staff",
     designation: "PEACE_AND_ORDER",
+    pic: "", // Initialize pic state
   });
 
-  // Pre-fill form if editing
   useEffect(() => {
     if (isEditMode && userToEdit) {
       setFormData({
         username: userToEdit.username || "",
         email: userToEdit.email || "",
-        password: "", // Keep password empty in edit mode for security
+        password: "",
         role: userToEdit.role || "staff",
         designation: userToEdit.designation || "PEACE_AND_ORDER",
+        pic: userToEdit.pic || "", // Load existing pic if available
       });
     }
   }, [isEditMode, userToEdit]);
 
-  // Handle Input Changes
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
+  // NEW: Handle Image to Base64 Conversion
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      if (file.size > 2 * 1024 * 1024) { // 2MB Limit Check
+        setSubmissionStatus("error");
+        setErrorMessage("Image is too large. Please select a file under 2MB.");
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setFormData((prev) => ({ ...prev, pic: reader.result as string }));
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
     if (!isChecked && !isEditMode) {
       setSubmissionStatus("error");
       setErrorMessage("Please agree to the terms and conditions.");
@@ -71,14 +92,16 @@ export default function SignUpForm({ userToEdit = null, onSuccess = () => {} } :
       if (isEditMode && userToEdit) {
         await userService.update(userToEdit.id, formData);
       } else {
-        await userService.create(formData);
-      }
 
-      setSubmissionStatus("success");
-      
-      setTimeout(() => {
-        onSuccess(); 
-      }, 1500);
+        // return console.log(formData)
+        await userService.create(formData);
+        setSubmissionStatus("success");
+
+        // NEW: Redirect to Sign In after 2 seconds so they see the success message
+        setTimeout(() => {
+          navigate("/signin"); // Ensure this matches your route path
+        }, 2000);
+      }
     } catch (err: any) {
       setSubmissionStatus("error");
       setErrorMessage(err.response?.data?.message || `Failed to ${isEditMode ? 'update' : 'create'} user.`);
@@ -97,7 +120,7 @@ export default function SignUpForm({ userToEdit = null, onSuccess = () => {} } :
       </div>
 
       <div className="flex flex-col justify-center flex-1 w-full max-w-md mx-auto">
-        <div className="mb-5 sm:mb-8">
+        <div className="mb-5 sm:mb-8 text-center sm:text-left">
           <h1 className="mb-2 font-semibold text-gray-800 text-title-sm dark:text-white/90 sm:text-title-md">
             {isEditMode ? "Update User" : "Sign Up"}
           </h1>
@@ -106,18 +129,36 @@ export default function SignUpForm({ userToEdit = null, onSuccess = () => {} } :
           </p>
         </div>
 
-        {/* Status Messages */}
-        {submissionStatus === "error" && (
-          <div className="p-3 mb-4 text-xs text-red-500 bg-red-50 rounded border border-red-100">{errorMessage}</div>
-        )}
-        {submissionStatus === "success" && (
-          <div className="p-3 mb-4 text-xs text-green-600 bg-green-50 rounded border border-green-100">
-            User {isEditMode ? 'updated' : 'created'} successfully!
-          </div>
-        )}
-
         <form onSubmit={handleSubmit}>
           <div className="space-y-5">
+            
+            {/* NEW: Profile Picture Upload UI */}
+            <div className="flex flex-col items-center gap-4 mb-6">
+              <div className="relative overflow-hidden bg-gray-100 rounded-full size-24 dark:bg-gray-800 border-2 border-gray-200 dark:border-gray-700">
+                {formData.pic ? (
+                  <img src={formData.pic} alt="Profile" className="object-cover w-full h-full" />
+                ) : (
+                  <div className="flex items-center justify-center w-full h-full text-gray-400">
+                    <UserIcon className="size-10" />
+                  </div>
+                )}
+              </div>
+              <button
+                type="button"
+                onClick={() => fileInputRef.current?.click()}
+                className="text-xs font-medium text-brand-500 hover:text-brand-600"
+              >
+                {formData.pic ? "Change Photo" : "Upload Photo"}
+              </button>
+              <input
+                type="file"
+                ref={fileInputRef}
+                onChange={handleImageChange}
+                className="hidden"
+                accept="image/*"
+              />
+            </div>
+
             {/* Username */}
             <div>
               <Label>Username<span className="text-error-500">*</span></Label>
@@ -179,11 +220,9 @@ export default function SignUpForm({ userToEdit = null, onSuccess = () => {} } :
                 <option value="PEACE_AND_ORDER">Peace and Order</option>
                 <option value="HEALTH_AND_SANITATION">Health and Sanitation</option>
                 <option value="EDUCATION_CULTURE_ARTS">Education, Culture and Arts</option>
-                {/* ... add others as per your Prisma Enum ... */}
               </select>
             </div>
 
-            {/* Checkbox (Only show for Sign Up) */}
             {!isEditMode && (
               <div className="flex items-center gap-3">
                 <Checkbox checked={isChecked} onChange={setIsChecked} />

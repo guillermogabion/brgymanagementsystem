@@ -83,6 +83,7 @@ exports.getResidentById = async (req, res) => {
 
 exports.createResident = async (req, res) => {
     const { 
+            pic,
             firstName, 
             lastName, 
             birthDate, 
@@ -93,10 +94,10 @@ exports.createResident = async (req, res) => {
             isSeniorCitizen  } = req.body;
 
 
-    // return console.log(req.body, 'check');
     try {
         const newResident = await prisma.resident.create({
             data: { 
+                pic,
                 firstName, 
                 lastName, 
                 birthDate: new Date(birthDate).toISOString(), 
@@ -124,7 +125,7 @@ exports.createResident = async (req, res) => {
 exports.updateResident = async (req, res) => {
     const { id } = req.params;
     const { 
-        firstName, lastName, birthDate, purok, 
+        pic, firstName, lastName, birthDate, purok, 
         houseNumber, phoneNumber, isIndigent, isSeniorCitizen 
     } = req.body;
 
@@ -132,6 +133,7 @@ exports.updateResident = async (req, res) => {
         const updatedResident = await prisma.resident.update({
             where: { id: parseInt(id) },
             data: {
+                pic,
                 firstName,
                 lastName,
                 // Ensure birthDate is converted back to a Date object if it's a string

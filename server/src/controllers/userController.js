@@ -41,7 +41,8 @@ exports.login = async (req, res) => {
                 id: user.id,
                 username: user.username,
                 role: user.role,
-                designation: user.designation
+                designation: user.designation,
+                pic: user.pic
             }
         });
 
@@ -60,9 +61,10 @@ exports.logout = async (req, res) => {
 
 // --- IMPROVED CREATE USER (With Password Hashing) ---
 exports.createUser = async (req, res) => {
-    const { username, password, role, designation, email } = req.body;
+    // 1. Add 'pic' to the destructured body
+    const { username, password, role, designation, email, pic } = req.body;
 
-    console.log(req.body)
+    console.log("Creating user:", req.body);
 
     try {
         // Hash the password before saving
@@ -71,10 +73,13 @@ exports.createUser = async (req, res) => {
         const newUser = await prisma.user.create({
             data: { 
                 username, 
-                password: hashedPassword, // Store the hash, not the plain text
+                password: hashedPassword, 
                 role,
                 designation,
-                email
+                email,
+                // 2. Add the pic to the database record
+                // If pic is optional, it will be null if not provided
+                pic: pic || null 
             }
         });
 
@@ -82,7 +87,7 @@ exports.createUser = async (req, res) => {
         const { password: _, ...userWithoutPassword } = newUser;
         res.status(201).json(userWithoutPassword);
     } catch (error) {
-        console.error(error);
+        console.error("Create User Error:", error);
         res.status(400).json({ error: "Username or email might already exist" });
     }
 };

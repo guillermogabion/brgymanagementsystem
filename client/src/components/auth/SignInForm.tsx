@@ -42,6 +42,7 @@ export default function SignInForm() {
       localStorage.setItem("token", data.token);
       localStorage.setItem("user", JSON.stringify(data.user));
 
+      window.dispatchEvent(new Event("storage"));
       // Redirect to dashboard
       setSubmissionStatus("success");
 
